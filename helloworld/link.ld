@@ -15,19 +15,18 @@ SECTIONS
 {
   .isr_vector :
   {
-  KEEP(*(.isr_vector))
+  KEEP(*(.isr_vector)) /* interrupt service routine at 0x0 */
   } >FLASH
 
   .text :
   {
-    /* I guess _stext is automatically defined.*/
     . = ALIGN(4);
     *(.text)
     *(.rodata)
 
     . = ALIGN(4);
     _etext = .;
-  } >FLASH
+  } >FLASH /* offset into start of flash */
 
   .data :
   {
@@ -38,7 +37,8 @@ SECTIONS
 
     . = ALIGN(4);
     _edata = .; /* end data*/
-  } >SRAM AT> FLASH /* virtual memory address AT > load memory address, where section is loaded onto the target*/
+  } >SRAM1 AT> FLASH /* virtual memory address AT > load memory address, where section is loaded onto the target*/
+  /* data in SRAM1 will be saved in flash and copied during load */
 
   .bss :
   {
@@ -49,6 +49,6 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .; /* end bss*/
   } >SRAM1
-
+  
 
 }
