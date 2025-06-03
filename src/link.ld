@@ -4,7 +4,7 @@ ENTRY(reset_handler)
 MEMORY {
   FLASH (rx): ORIGIN = 0x08000000, LENGTH = 2048K /* Flash memory: x0800 0000 - x0820 0000*/
   SRAM1 (rwx): ORIGIN = 0x20000000, LENGTH = 112K /* Ram 1: aliased: x2000 0000 - x2001 C000*/
-  SRAM2 (rwx): ORIGIN = 0x2001CD00, LENGTH - 16K /* Ram 2: aliased: x2001 C000 - x2002 0000*/
+  SRAM2 (rwx): ORIGIN = 0x2001CD00, LENGTH = 16K /* Ram 2: aliased: x2001 C000 - x2002 0000*/
 }
 
 /*

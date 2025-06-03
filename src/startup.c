@@ -2,7 +2,7 @@
 
 /* Data that initializes the stack pointer */
 
-#define SRAM1_START (0x200000000U)
+#define SRAM1_START (0x20000000U)
 #define SRAM1_SIZE (112U * 1024U)
 #define SRAM1_END (SRAM1_START + SRAM1_SIZE)
 #define STACK_POINTER_INIT_ADDRESS (SRAM1_END) // start at end
@@ -311,6 +311,35 @@ uint32_t isr_vector[ISR_VECTOR_SIZE_W]
         (uint32_t)&hdmi_cec_handler_0x1B4,
         (uint32_t)&spdif_rx_handler_0x1B8,
         (uint32_t)&fmpi2c1_ev_handler_0x1BC,
-        (uint32_t)&fmpi2c1_err_handler_0x1C0,
+        (uint32_t)&fmpi2c1_err_handler_0x1C0
 };
+
+extern uint32_t _etext, _sdata, _edata, _sbss, _ebss;
+void main(void);
+
+void default_handler(void) {}
+
+void reset_handler(void)
+{
+  uint32_t data_size = (uint32_t)&_edata - (uint32_t)&_sdata;
+  uint8_t *flash_data = (uint8_t*) &_etext;
+  uint8_t *sram_data = (uint8_t*) &_sdata;
+
+  for (uint32_t i = 0; i < data_size; i++)
+  {
+    sram_data[i] = flash_data[i];
+  }
+  
+  // zero fill .bss section in sram
+  uint32_t bss_size = (uint32_t)&_ebss - (uint32_t)&_sbss;
+  uint8_t *bss = (uint8_t*) &_sbss;
+  
+  for (uint32_t i = 0; i < bss_size; i++)
+  {
+    bss[i] = 0;
+  }
+
+  main();
+}
+
 
