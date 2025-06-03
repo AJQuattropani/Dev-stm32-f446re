@@ -3,10 +3,9 @@
 Projects for the STM32 NUCLEO-F446RE embedded microcontroller board.
 
 TODO:
-- Implement first program for the board.
-- Run program on board.
+- Flash an LED on a breadboard next.
 
-PROGRAM IS BASED ON:
+CURRENT PROGRAM IS BASED ON:
 https://kleinembedded.com/stm32-without-cubeide-part-1-the-bare-necessities/
 with differences resulting from differences in board
 
