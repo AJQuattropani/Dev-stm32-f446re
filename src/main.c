@@ -43,7 +43,7 @@ void main(void)
   while (1)
   {
     *GPIOA_ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
-    for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
+    for (uint32_t i = 0; i < 1000000; i++); // busy wait
   }
 
 }
