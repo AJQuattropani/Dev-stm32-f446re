@@ -1,8 +1,18 @@
 # Dev-stm32-f446re
 
-Project for learning the STM32 NUCLEO-F446RE embedded microcontroller board.
+## Build:
+Requires arm-none-eabi-gcc for cross-compilation and linking.
+1. Clone the repository:
+``git clone git@github.com:AJQuattropani/Dev-stm32-f446re.git``
+2. Run `make` in root directory.
+    Note: Run `bear -- make` to with bear installed to update `compile_commands.json`
+## Deploy:
+Requires OpenOCD to deploy.
+3. Connect STM32-F446RE NUCLEO to a USB port.
+4. In the `/deploy` directory, run `./deploy.sh`
+5. The light near the USB-B input should flash red and green, and the program should begin to run.
 
-TODO:
+## TODO:
 - Flash an LED on a breadboard next.
 
 CURRENT PROGRAM IS BASED ON:
