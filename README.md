@@ -1,16 +1,20 @@
 # Dev-stm32-f446re
 
 ## Build:
+
 Requires arm-none-eabi-gcc for cross-compilation and linking.
 1. Clone the repository:
-``git clone git@github.com:AJQuattropani/Dev-stm32-f446re.git``
-2. Run `make` in root directory.
-    Note: Run `bear -- make` to with bear installed to update `compile_commands.json`
+``git clone --recurse-submodules git@github.com:AJQuattropani/Dev-stm32-f446re.git``
+2. Switch to local branch associated with the project:
+``cd git checkout STM32-DEV``
+3. Run `make` in project root directory.
+  ||  Note: Run `bear -- make` to with bear installed to update `compile_commands.json`
+
 ## Deploy:
 Requires OpenOCD to deploy.
-3. Connect STM32-F446RE NUCLEO to a USB port.
-4. In the `/deploy` directory, run `./deploy.sh`
-5. The light near the USB-B input should flash red and green, and the program should begin to run.
+1. Connect STM32-F446RE NUCLEO to a USB port.
+2. In the `/deploy` directory, run `/deploy.sh`
+3. The light near the USB-B input should flash red and green, and the program should begin to run.
 
 ## TODO:
 - Flash an LED on a breadboard next.
