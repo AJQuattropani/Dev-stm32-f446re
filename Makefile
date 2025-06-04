@@ -13,7 +13,7 @@ SRC := $(wildcard $(SRCDIR)/*.c)
 DEPSRC := $(SRCDIR)/$(DEPLOY)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-CFLAGS := -mcpu=cortex-m4 -mthumb -Wall -nostdlib -Wno-unused-but-set-variable -Wno-main --save-temps
+CFLAGS := -mcpu=cortex-m4 -mthumb -Wall -nostdlib -Wno-unused-but-set-variable -Wno-main -Wno-main-return-type --save-temps
 LDFLAGS := -T $(SRCDIR)/link.ld -nostdlib
 
 .PHONY: all clean
