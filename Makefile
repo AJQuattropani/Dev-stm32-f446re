@@ -13,8 +13,30 @@ SRC := $(wildcard $(SRCDIR)/*.c)
 DEPSRC := $(SRCDIR)/$(DEPLOY)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-CFLAGS := -mcpu=cortex-m4 -mthumb -Wall -nostdlib -Wno-unused-but-set-variable -Wno-main -Wno-main-return-type --save-temps
-LDFLAGS := -T $(SRCDIR)/link.ld -nostdlib
+VENDOR := ./vendor
+CMSIS := $(VENDOR)/CMSIS
+STM32F4 := $(CMSIS)/Device/ST/STM32F4
+
+SYS_FILE := system_stm32f4xx
+STM32F4_SYS := $(STM32F4)/Source/Templates/$(SYS_FILE).c
+
+ARM_INC := $(CMSIS)/CMSIS/Core/Include
+STM32F4_INC := $(STM32F4)/Include/
+
+CFLAGS := -mcpu=cortex-m4 \
+	  -mthumb \
+	  -Wall \
+	  -nostdlib \
+	  -Wno-unused-but-set-variable \
+	  -Wno-main \
+	  -Wno-main-return-type \
+	  --save-temps
+CPPFLAGS := -DSTM32F446xx \
+	    -I$(ARM_INC) \
+	    -I$(STM32F4_INC)
+
+LINKER_SCRIPT := $(SRCDIR)/link.ld
+LDFLAGS := -T $(LINKER_SCRIPT) -nostdlib
 
 .PHONY: all clean
 all: $(ELF) $(DEPOUT)
@@ -23,9 +45,12 @@ $(DEPOUT): $(DEPSRC)
 	cp -u $(DEPSRC) $(DEPOUT)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(ELF): $(OBJ) | $(OUTDIR)
+$(SYS_FILE).o: $(STM32F4_SYS) | $(OBJDIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(SYS_FILE).o
+
+$(ELF): $(OBJ) $(SYS_FILE).o | $(OUTDIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(OUTDIR):
@@ -33,6 +58,12 @@ $(OUTDIR):
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
+
+PROGRAMMER := openocd
+PROGRAMMER_FLAGS := -f interface/stlink.cfg -f target/stm32f4x.cfg
+
+flash: $(ELF)
+	$(PROGRAMMER) $(PROGRAMMER_FLAGS) -c "program $(ELF) verify reset exit"
 
 clean:
 	$(RM) -rv $(OUTDIR) $(OBJDIR)
