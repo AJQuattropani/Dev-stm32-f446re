@@ -8,7 +8,7 @@ Requires arm-none-eabi-gcc for cross-compilation and linking.
 2. Switch to local branch associated with the project:
 ``cd git checkout STM32-DEV``
 3. Run `make` in project root directory.
-  ||  QUICK DEPLOY: `bear -- make flash` to build AND deploy to connected device.
+  ||  QUICK DEPLOY: `make flash` to build AND deploy to connected device.
   ||  Note: Run `bear -- make` to with bear installed to update `compile_commands.json`
 
 ## Deploy:
