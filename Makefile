@@ -47,10 +47,10 @@ $(DEPOUT): $(DEPSRC)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(SYS_FILE).o: $(STM32F4_SYS) | $(OBJDIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(SYS_FILE).o
+$(OBJDIR)/$(SYS_FILE).o: $(STM32F4_SYS) | $(OBJDIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(OBJDIR)/$(SYS_FILE).o
 
-$(ELF): $(OBJ) $(SYS_FILE).o | $(OUTDIR)
+$(ELF): $(OBJ) $(OBJDIR)/$(SYS_FILE).o | $(OUTDIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(OUTDIR):
