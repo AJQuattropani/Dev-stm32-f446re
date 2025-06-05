@@ -311,7 +311,8 @@ uint32_t isr_vector[ISR_VECTOR_SIZE_W]
         (uint32_t)&hdmi_cec_handler_0x1B4,
         (uint32_t)&spdif_rx_handler_0x1B8,
         (uint32_t)&fmpi2c1_ev_handler_0x1BC,
-        (uint32_t)&fmpi2c1_err_handler_0x1C0
+        (uint32_t)&fmpi2c1_err_handler_0x1C0,
+  // TODO one of the interrupts is missing. figure out which.
 };
 
 extern uint32_t _etext, _sdata, _edata, _sbss, _ebss;

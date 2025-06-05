@@ -1,2 +1,4 @@
 intermediate/*
 deploy/*
+intermediate/*
+.cache/*

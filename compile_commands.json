@@ -1,0 +1,46 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-mcpu=cortex-m4",
+      "-mthumb",
+      "-Wall",
+      "-Wno-unused-but-set-variable",
+      "-Wno-main",
+      "-Wno-main-return-type",
+      "--save-temps",
+      "-DSTM32F446xx",
+      "-I./vendor/CMSIS/CMSIS/Core/Include",
+      "-I./vendor/CMSIS/Device/ST/STM32F4/Include/",
+      "-c",
+      "-o",
+      "intermediate/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/aurora/Dev/stm32-f446re-nucleo",
+    "file": "/home/aurora/Dev/stm32-f446re-nucleo/src/main.c",
+    "output": "/home/aurora/Dev/stm32-f446re-nucleo/intermediate/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-mcpu=cortex-m4",
+      "-mthumb",
+      "-Wall",
+      "-Wno-unused-but-set-variable",
+      "-Wno-main",
+      "-Wno-main-return-type",
+      "--save-temps",
+      "-DSTM32F446xx",
+      "-I./vendor/CMSIS/CMSIS/Core/Include",
+      "-I./vendor/CMSIS/Device/ST/STM32F4/Include/",
+      "-c",
+      "-o",
+      "intermediate/startup.o",
+      "src/startup.c"
+    ],
+    "directory": "/home/aurora/Dev/stm32-f446re-nucleo",
+    "file": "/home/aurora/Dev/stm32-f446re-nucleo/src/startup.c",
+    "output": "/home/aurora/Dev/stm32-f446re-nucleo/intermediate/startup.o"
+  }
+]
