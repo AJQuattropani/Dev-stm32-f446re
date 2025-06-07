@@ -18,6 +18,7 @@ Requires OpenOCD to deploy.
 3. The light near the USB-B input should flash red and green, and the program should begin to run.
 
 ## TODO:
+- Uncomment High-Speed External Oscillator once part arrives.
 - Flash an LED on a breadboard next.
 
 CURRENT PROGRAM IS BASED ON:

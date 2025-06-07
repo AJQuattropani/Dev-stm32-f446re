@@ -36,7 +36,7 @@ CPPFLAGS := -DSTM32F446xx \
 	    -I$(STM32F4_INC)
 
 LINKER_SCRIPT := $(SRCDIR)/link.ld
-LDFLAGS := -T $(LINKER_SCRIPT) -nostdlib
+LDFLAGS := -T $(LINKER_SCRIPT) --specs=nano.specs #-nostdlib
 
 .PHONY: all clean
 all: $(ELF) $(DEPOUT)
