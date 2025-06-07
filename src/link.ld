@@ -44,10 +44,12 @@ SECTIONS
   {
     . = ALIGN(4);
     _sbss = .; /* start bss*/
+    __bss_start__ _sbss;
     *(.bss)
 
     . = ALIGN(4);
     _ebss = .; /* end bss*/
+    __bss_end__ = _ebss;
   } >SRAM1
   
 
