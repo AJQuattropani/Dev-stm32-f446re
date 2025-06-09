@@ -31,8 +31,7 @@ void delay_ms(uint32_t ms);
 void main(void)
 {
   //configure_clock();
-  //SystemCoreClockUpdate();
-  //SysTick_Config(100000); // 10,000,000 / 100,000 = 1
+  SystemCoreClockUpdate();
 
   RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN_Pos); // sets the bit to enable GPIOA
 
@@ -47,6 +46,7 @@ void main(void)
 
   GPIOB->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
 
+  SysTick_Config(100000); // 10,000,000 / 100,000 = 1
   __enable_irq();
 
   usart_init(USART2);
@@ -60,26 +60,27 @@ void main(void)
 
     GPIOB->ODR ^= (1 << EXT_LED_PINB); // flip bit 5 of the GPIOB out data register
 
-    for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
-    //delay_ms(500);
+    //for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
+    delay_ms(50);
     
     GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
-    for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
+    //for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
+    delay_ms(10);
 
     GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
     
     GPIOB->ODR ^= (1 << EXT_LED_PINB); // flip bit 5 of the GPIOB out data register
-    for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
+    //for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
+    delay_ms(50);
 
     GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
-    for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
+    //for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
+    delay_ms(10);
   }
 
 }
 
 void configure_clock(void) { 
-  RCC->CR |= RCC_CR_HSEBYP_Msk | RCC_CR_HSEON_Msk; // enable clock and turn on
-  while (!(RCC->CR & RCC_CR_HSERDY_Msk)); // wait for clock to become ready
   
   // enable power controller to set voltage scale to 1
   // Reference: PWR power control register (Reference Manual)
@@ -92,6 +93,9 @@ void configure_clock(void) {
   // Flash controller set for 3V3 supply and 100MHz (Table 6 of Reference Manual)
   FLASH->ACR |= FLASH_ACR_LATENCY_3WS;
 
+  RCC->CR |= RCC_CR_HSEBYP_Msk | RCC_CR_HSEON_Msk; // enable clock (to use OSCIN) and turn on
+  while (!(RCC->CR & RCC_CR_HSERDY_Msk)); // wait for clock to become ready
+  
   // 8 MHz HSE clock / M = 4 = 2 MHz for PLL input
   // clear the PLLM, PLLN, PLLP bits
   RCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLM_Msk | RCC_PLLCFGR_PLLN_Msk | RCC_PLLCFGR_PLLP_Msk);
