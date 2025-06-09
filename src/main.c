@@ -1,15 +1,9 @@
 #include <stdint.h>
+#include <stdio.h>
+
 #include "stm32f4xx.h"
 
-/* #define PERIPHERAL_BASE (0x40000000U) // location of RCC 
-#define AHB1_BASE (PERIPHERAL_BASE + 0x20000U) // location of Advanced Hardware Bus 1
-#define GPIOA_BASE (AHB1_BASE + 0x0U) // offset into AHB1 of GPIOA
-#define RCC_BASE (AHB1_BASE + 0x3800U) // offset into AHB1 of RCC
-
-#define RCC_AHB1ENR_OFFSET (0x30U) // offset into RCC for "RCC AHB1 peripheral clock enable register"
-#define RCC_AHB1ENR ((volatile uint32_t*) (RCC_BASE + RCC_AHB1ENR_OFFSET)) // pointer to clock enable register
-#define RCC_AHB1ENR_GPIOAEN (0x00U) // bit 0 of register enables GPIOA
-*/
+#include "usart.h"
 
 /* 
 * MODER configuration:
@@ -19,25 +13,16 @@
 * 0b11: Analog mode
 */
 
-/*
-#define GPIO_MODER_OFFSET (0x00U) // offset of mode register in GPIOA section of ADHB1
-#define GPIOA_MODER ((volatile uint32_t*) (GPIOA_BASE + GPIO_MODER_OFFSET)) // pointer to gpio mode register
-#define GPIO_MODE_MODER5 (10U) // two mode bits for each pin, so to access pin 5: offset of 10 
-#define GPIO_ODR_OFFSET (0x14U) // offset of GPIO output data register from GPIOA section
-#define GPIOA_ODR ((volatile uint32_t*) (GPIOA_BASE + GPIO_ODR_OFFSET)) // pointer to GPIOA out data register
-*/
-
 #define LED_PIN 5 // pin 5 is at bit 5, just 1 bit for each output
 #define EXT_LED_PIN 8
 #define EXT_LED_PINB 5
 
-/*
 #define GP_OUT 0b01
 #define GP_IN 0b00
 #define GP_ALT 0b10
 #define GP_ANLG 0b11
-*/
-uint32_t ticks;
+
+volatile uint32_t ticks;
 void configure_clock(void);
 void systick_handler_0x03C(void) { ticks++; }
 void delay_ms(uint32_t ms);
@@ -48,11 +33,13 @@ void main(void)
   //configure_clock();
   //SystemCoreClockUpdate();
   //SysTick_Config(100000); // 10,000,000 / 100,000 = 1
-  //__enable_irq();
 
   RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN_Pos); // sets the bit to enable GPIOA
 
   RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOBEN_Pos); // sets the bit to enable GPIOB
+  volatile uint32_t dummy;
+  dummy = RCC->AHB1ENR;
+  dummy = RCC->AHB1ENR;
 
   // sets GPIOA to turn pin 5, pin 8 to output
   GPIOA->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
@@ -60,8 +47,14 @@ void main(void)
 
   GPIOB->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
 
+  __enable_irq();
+
+  usart_init(USART2);
+
   while (1)
   {
+    printf("[%.3f] Hello, World!\r\n", (float)ticks/1000.0);
+
     GPIOA->ODR ^= (1 << EXT_LED_PIN);
     GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
 
