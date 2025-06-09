@@ -1,7 +1,6 @@
 #include <stdint.h>
 
 /* Data that initializes the stack pointer */
-
 #define SRAM1_START (0x20000000U)
 #define SRAM1_SIZE (112U * 1024U)
 #define SRAM1_END (SRAM1_START + SRAM1_SIZE)
@@ -196,6 +195,8 @@ void fmpi2c1_ev_handler_0x1BC(void)
     __attribute__((weak, alias("default_handler")));
 void fmpi2c1_err_handler_0x1C0(void)
     __attribute__((weak, alias("default_handler")));
+void lptim1_exti32_handler(void)
+    __attribute__((weak, alias("default_handler")));
 
 uint32_t isr_vector[ISR_VECTOR_SIZE_W]
     __attribute__((section(".isr_vector"))) = {
@@ -312,19 +313,21 @@ uint32_t isr_vector[ISR_VECTOR_SIZE_W]
         (uint32_t)&spdif_rx_handler_0x1B8,
         (uint32_t)&fmpi2c1_ev_handler_0x1BC,
         (uint32_t)&fmpi2c1_err_handler_0x1C0,
+        (uint32_t)&lptim1_exti32_handler
   // TODO one of the interrupts is missing. figure out which.
 };
 
-extern uint32_t _etext, _sdata, _edata, _sbss, _ebss;
-void main(void);
+extern uint32_t _etext, _sdata, _edata, _sbss, _ebss, _sidata;
 
-void default_handler(void) {}
+void main(void);
+void __libc_init_array();
+
 
 void reset_handler(void)
 {
   uint32_t data_size = (uint32_t)&_edata - (uint32_t)&_sdata;
-  uint8_t *flash_data = (uint8_t*) &_etext;
-  uint8_t *sram_data = (uint8_t*) &_sdata;
+  uint8_t *flash_data = (uint8_t*) &_sidata; // load addr
+  uint8_t *sram_data = (uint8_t*) &_sdata; // virt addr
 
   for (uint32_t i = 0; i < data_size; i++)
   {
@@ -340,7 +343,14 @@ void reset_handler(void)
     bss[i] = 0;
   }
 
+  __libc_init_array();
   main();
+}
+
+
+void default_handler(void) 
+{
+  while (1);
 }
 
 

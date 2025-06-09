@@ -1,8 +1,10 @@
 /* Set the entry point on startup to the function reset_handler. */
 ENTRY(reset_handler)
 
+/* LQFP64 */
+
 MEMORY {
-  FLASH (rx): ORIGIN = 0x08000000, LENGTH = 2048K /* Flash memory: x0800 0000 - x0820 0000*/
+  FLASH (rx): ORIGIN = 0x08000000, LENGTH = 512K /* Flash memory space: x0800 0000 - x0820 0000*/
   SRAM1 (rwx): ORIGIN = 0x20000000, LENGTH = 112K /* Ram 1: aliased: x2000 0000 - x2001 C000*/
   SRAM2 (rwx): ORIGIN = 0x2001CD00, LENGTH = 16K /* Ram 2: aliased: x2001 C000 - x2002 0000*/
 }
@@ -15,18 +17,27 @@ SECTIONS
 {
   .isr_vector :
   {
-  KEEP(*(.isr_vector)) /* interrupt service routine at 0x0 */
+    KEEP(*(.isr_vector)) /* interrupt service routine at 0x0 */
   } >FLASH
 
   .text :
   {
     . = ALIGN(4);
+
     *(.text)
+    *(.text.*)
     *(.rodata)
+    *(.rodata.*)
+    KEEP(*(.init))
+    KEEP(*(.fini))
+    *(.eh_frame)
+    *(.ARM.exidx)
 
     . = ALIGN(4);
     _etext = .;
   } >FLASH /* offset into start of flash */
+
+  _sidata = LOADADDR(.data);
 
   .data :
   {
@@ -34,6 +45,9 @@ SECTIONS
     _sdata = .; /* start data*/
 
     *(.data)
+    *(.data.*)
+    KEEP(*(.init_array))
+    KEEP(*(.fini_array))
 
     . = ALIGN(4);
     _edata = .; /* end data*/
@@ -44,8 +58,10 @@ SECTIONS
   {
     . = ALIGN(4);
     _sbss = .; /* start bss*/
-    __bss_start__ _sbss;
+    __bss_start__ = _sbss;
+    
     *(.bss)
+    *(.bss.*)
 
     . = ALIGN(4);
     _ebss = .; /* end bss*/
