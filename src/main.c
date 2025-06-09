@@ -28,6 +28,8 @@
 */
 
 #define LED_PIN 5 // pin 5 is at bit 5, just 1 bit for each output
+#define EXT_LED_PIN 8
+#define EXT_LED_PINB 5
 
 /*
 #define GP_OUT 0b01
@@ -40,6 +42,7 @@ void configure_clock(void);
 void systick_handler_0x03C(void) { ticks++; }
 void delay_ms(uint32_t ms);
 
+
 void main(void)
 {
   //configure_clock();
@@ -49,19 +52,34 @@ void main(void)
 
   RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN_Pos); // sets the bit to enable GPIOA
 
-  // two dummy reads after enabling peripheral clock per errata
-  volatile uint32_t dummy;
-  dummy = RCC->AHB1ENR;
-  dummy = RCC->AHB1ENR;
+  RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOBEN_Pos); // sets the bit to enable GPIOB
 
-  // GPIOA->MODER |= (GP_OUT << GPIO_MODE_MODER5); // sets GPIOA to turn pin 5 to output
-  GPIOA->MODER |= (1 << GPIO_MODER_MODER5_Pos);
+  // sets GPIOA to turn pin 5, pin 8 to output
+  GPIOA->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
+  GPIOA->MODER |= (0b01 << GPIO_MODER_MODER8_Pos);
+
+  GPIOB->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
 
   while (1)
   {
+    GPIOA->ODR ^= (1 << EXT_LED_PIN);
     GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
+
+    GPIOB->ODR ^= (1 << EXT_LED_PINB); // flip bit 5 of the GPIOB out data register
+
     for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
     //delay_ms(500);
+    
+    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
+    for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
+
+    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
+    
+    GPIOB->ODR ^= (1 << EXT_LED_PINB); // flip bit 5 of the GPIOB out data register
+    for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
+
+    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
+    for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
   }
 
 }
