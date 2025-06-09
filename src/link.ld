@@ -17,18 +17,27 @@ SECTIONS
 {
   .isr_vector :
   {
-  KEEP(*(.isr_vector)) /* interrupt service routine at 0x0 */
+    KEEP(*(.isr_vector)) /* interrupt service routine at 0x0 */
   } >FLASH
 
   .text :
   {
     . = ALIGN(4);
+
     *(.text)
+    *(.text.*)
     *(.rodata)
+    *(.rodata.*)
+    KEEP(*(.init))
+    KEEP(*(.fini))
+    *(.eh_frame)
+    *(.ARM.exidx)
 
     . = ALIGN(4);
     _etext = .;
   } >FLASH /* offset into start of flash */
+
+  _sidata = LOADADDR(.data);
 
   .data :
   {
@@ -36,6 +45,9 @@ SECTIONS
     _sdata = .; /* start data*/
 
     *(.data)
+    *(.data.*)
+    KEEP(*(.init_array))
+    KEEP(*(.fini_array))
 
     . = ALIGN(4);
     _edata = .; /* end data*/
@@ -47,7 +59,9 @@ SECTIONS
     . = ALIGN(4);
     _sbss = .; /* start bss*/
     __bss_start__ = _sbss;
+    
     *(.bss)
+    *(.bss.*)
 
     . = ALIGN(4);
     _ebss = .; /* end bss*/
