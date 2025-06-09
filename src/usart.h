@@ -1,7 +1,6 @@
 #pragma once
 
-#include "stm32f4xx.h"
-#include <stdint.h>
+#include "hardware.h"
 
 void usart_init(USART_TypeDef *usart);
 

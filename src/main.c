@@ -1,26 +1,9 @@
-#include <stdint.h>
-#include <stdio.h>
+#include "main.h"
 
-#include "stm32f4xx.h"
-
-#include "usart.h"
-
-/* 
-* MODER configuration:
-* 0b00: Input (reset state)
-* 0b01: Generate Purpose OUTPUT mode
-* 0b10: Alternate function mode
-* 0b11: Analog mode
-*/
 
 #define LED_PIN 5 // pin 5 is at bit 5, just 1 bit for each output
 #define EXT_LED_PIN 8
 #define EXT_LED_PINB 5
-
-#define GP_OUT 0b01
-#define GP_IN 0b00
-#define GP_ALT 0b10
-#define GP_ANLG 0b11
 
 volatile uint32_t ticks;
 void configure_clock(void);
@@ -69,7 +52,6 @@ void main(void)
 
     GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
     
-    GPIOB->ODR ^= (1 << EXT_LED_PINB); // flip bit 5 of the GPIOB out data register
     //for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
     delay_ms(50);
 

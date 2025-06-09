@@ -10,6 +10,7 @@ Requires arm-none-eabi-gcc for cross-compilation and linking.
 3. Run `make` in project root directory.
   ||  QUICK DEPLOY: `make flash` to build AND deploy to connected device.
   ||  Note: Run `bear -- make` to with bear installed to update `compile_commands.json`
+  ||  CLEAN: To remove build files, run `make clean`
 
 ## Deploy:
 Requires OpenOCD to deploy.
@@ -18,11 +19,11 @@ Requires OpenOCD to deploy.
 3. The light near the USB-B input should flash red and green, and the program should begin to run.
 
 ## TODO:
-- Uncomment High-Speed External Oscillator once part arrives.
-- Flash an LED on a breadboard next.
+- Test temperature sensor on board at I2C.
+- Implement LED flash with button ISR.
 
 CURRENT PROGRAM IS BASED ON:
-https://kleinembedded.com/stm32-without-cubeide-part-1-the-bare-necessities/
+https://kleinembedded.com/stm32-without-cubeide-part-3-the-bare-necessities/
 with differences resulting from differences in board
 
 # Longerm Goal:
