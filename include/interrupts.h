@@ -10,11 +10,11 @@
 */
 #define ISR_VECTOR_SIZE_W 114
 
-void reset_handler(void);
 void default_handler(void);
 
 /* system exception interrupts */
-void reset_handler_0x004(void) __attribute__((weak, alias("reset_handler")));
+//void reset_handler_0x004(void) __attribute__((weak, alias("reset_handler")));
+extern void reset_handler_0x004(void);
 void nmi_handler_0x008(void) __attribute__((weak, alias("default_handler")));
 void hard_fault_handler_0x00C(void)
     __attribute__((weak, alias("default_handler")));
@@ -28,7 +28,7 @@ void usage_fault_handler_0x018(void)
 void svcall_handler_0x02C(void) __attribute__((weak, alias("default_handler")));
 void debug_handler_0x030(void) __attribute__((weak, alias("default_handler")));
 void pendsv_handler_0x038(void) __attribute__((weak, alias("default_handler")));
-void systick_handler_0x03C(void) __attribute__((weak, alias("default_handler")));
+extern void systick_handler_0x03C(void);
 
 /* STM interrupts */
 void wwdg_handler_0x040(void) __attribute__((weak, alias("default_handler")));

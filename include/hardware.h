@@ -1,7 +1,10 @@
 #pragma once
 
-#include <stdint.h>
 #include "stm32f4xx.h"
+
+#define LED_PIN 5 // pin 5 is at bit 5, just 1 bit for each output
+#define EXT_LED_PIN 8
+#define EXT_LED_PINB 5
 
 /* Data that initializes the stack pointer */
 #define SRAM1_START (0x20000000U)

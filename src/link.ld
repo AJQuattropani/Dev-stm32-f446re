@@ -1,5 +1,7 @@
 /* Set the entry point on startup to the function reset_handler. */
-ENTRY(reset_handler)
+ENTRY(reset_handler);
+PROVIDE(reset_handler_0x004 = reset_handler);
+PROVIDE(systick_handler_0x03C = systick_handler);
 
 /* LQFP64 */
 
