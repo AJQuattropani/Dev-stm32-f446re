@@ -16,4 +16,14 @@
 #define SRAM1_END (SRAM1_START + SRAM1_SIZE)
 #define STACK_POINTER_INIT_ADDRESS (SRAM1_END) // start at end
 
+#define DUMMY_READ_FROM(x) \
+{ \
+  volatile uint32_t __dummy__r; \
+  __dummy__r = x; \
+  __dummy__r = x; \
+}
+
+#define WAIT_FOR(reg, mask) \
+while (! (reg & mask));
+
 #endif
