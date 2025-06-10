@@ -1,6 +1,9 @@
 #pragma once
 
 #include "stm32f4xx.h"
+#ifndef __STM32F4xx_H
+// discards warning related to supposed non-direct use of stm32 header
+#endif
 
 #define LED_PIN 5 // pin 5 is at bit 5, just 1 bit for each output
 #define EXT_LED_PIN 8
