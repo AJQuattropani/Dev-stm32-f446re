@@ -1,16 +1,6 @@
 #include "main.h"
 
 
-#define LED_PIN 5 // pin 5 is at bit 5, just 1 bit for each output
-#define EXT_LED_PIN 8
-#define EXT_LED_PINB 5
-
-volatile uint32_t ticks;
-void configure_clock(void);
-void systick_handler_0x03C(void) { ticks++; }
-void delay_ms(uint32_t ms);
-
-
 void main(void)
 {
   //configure_clock();
