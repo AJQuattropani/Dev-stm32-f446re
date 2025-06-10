@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __HARDWARE_HEAD
+#define __HARDWARE_HEAD
 
 #include "stm32f4xx.h"
 #ifndef __STM32F4xx_H
@@ -27,3 +28,4 @@
 #define GP_ALT 0b10
 #define GP_ANLG 0b11
 
+#endif
