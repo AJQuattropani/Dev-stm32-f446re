@@ -1,5 +1,4 @@
-#include <stdint.h>
-#include "main.h"
+#pragma once
 
 void reset_handler(void);
 

@@ -1,5 +1,9 @@
 #include "main.h"
 
+#include <stdio.h>
+#include "usart.h"
+#include "clock.h"
+
 extern volatile uint32_t ticks;
 void main(void)
 {
