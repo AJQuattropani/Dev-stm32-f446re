@@ -8,7 +8,7 @@
 extern volatile uint32_t ticks;
 void main(void)
 {
-  //configure_clock();
+  configure_clock();
   SystemCoreClockUpdate();
 
   ENABLE_GPIO_A;
@@ -33,17 +33,17 @@ void main(void)
     GP_REG_TGB(GPIOA->ODR, EXT_LED_PIN);
     GP_REG_TGB(GPIOB->ODR, EXT_LED_PINB);
 
-    delay_ms(50);
+    delay_ms(500);
     
     GP_REG_TGB(GPIOA->ODR, LED_PIN);
-    delay_ms(10);
+    delay_ms(100);
 
     GP_REG_TGB(GPIOA->ODR, LED_PIN);
     
-    delay_ms(50);
+    delay_ms(500);
 
     GP_REG_TGB(GPIOA->ODR, LED_PIN);
-    delay_ms(10);
+    delay_ms(100);
   }
 
 }
