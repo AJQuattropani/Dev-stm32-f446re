@@ -1,4 +1,7 @@
 #include "startup.h"
+#include "main.h"
+
+#include <stdint.h>
 
 extern uint32_t _etext, _sdata, _edata, _sbss, _ebss, _sidata;
 void __libc_init_array();
