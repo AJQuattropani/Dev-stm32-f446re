@@ -1,6 +1,6 @@
 #include "main.h"
 
-
+extern volatile uint32_t ticks;
 void main(void)
 {
   //configure_clock();
@@ -50,17 +50,5 @@ void main(void)
     delay_ms(10);
   }
 
-}
-
-void delay_ms(uint32_t ms) {
-  uint32_t start = ticks;
-  uint32_t end = start + ms;
-
-  if (end < start) // overflow
-  {
-    while (ticks > start); // wait for ticks to wrap
-  }
-
-  while (ticks < end);
 }
 
