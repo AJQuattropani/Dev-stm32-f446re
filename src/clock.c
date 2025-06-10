@@ -1,5 +1,22 @@
 #include "clock.h"
 
+volatile uint32_t ticks;
+
+void systick_handler(void) { ticks++; }
+
+void delay_ms(uint32_t ms) {
+  uint32_t start = ticks;
+  uint32_t end = start + ms;
+
+  if (end < start) // overflow
+  {
+    while (ticks > start); // wait for ticks to wrap
+  }
+
+  while (ticks < end);
+}
+
+
 void configure_clock(void) { 
   
   // enable power controller to set voltage scale to 1
@@ -36,6 +53,4 @@ void configure_clock(void) {
   RCC->CFGR |= (RCC_CFGR_SW_PLL << RCC_CFGR_SW_Pos);
   while(!(RCC->CFGR & RCC_CFGR_SWS_PLL));
 }
-
-
 
