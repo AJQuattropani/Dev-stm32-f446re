@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include <stdio.h>
+#include "gpio.h"
 #include "usart.h"
 #include "clock.h"
 
@@ -10,18 +11,14 @@ void main(void)
   //configure_clock();
   SystemCoreClockUpdate();
 
-  RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN_Pos); // sets the bit to enable GPIOA
+  ENABLE_GPIO_A;
+  ENABLE_GPIO_B;
 
-  RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOBEN_Pos); // sets the bit to enable GPIOB
-  volatile uint32_t dummy;
-  dummy = RCC->AHB1ENR;
-  dummy = RCC->AHB1ENR;
+  DUMMY_READ_FROM(RCC->AHB1ENR);
 
-  // sets GPIOA to turn pin 5, pin 8 to output
-  GPIOA->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
-  GPIOA->MODER |= (0b01 << GPIO_MODER_MODER8_Pos);
-
-  GPIOB->MODER |= (0b01 << GPIO_MODER_MODER5_Pos);
+  GP_REG_SET(GPIOA->MODER, GP_OUT, GPIO_MODER_MODER5_Pos);
+  GP_REG_SET(GPIOA->MODER, GP_OUT, GPIO_MODER_MODER8_Pos);
+  GP_REG_SET(GPIOB->MODER, GP_OUT, GPIO_MODER_MODER5_Pos);
 
   SysTick_Config(100000); // 10,000,000 / 100,000 = 1
   __enable_irq();
@@ -32,25 +29,20 @@ void main(void)
   {
     printf("[%.3f] Hello, World!\r\n", (float)ticks/1000.0);
 
-    GPIOA->ODR ^= (1 << EXT_LED_PIN);
-    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
+    GP_REG_TGB(GPIOA->ODR, LED_PIN);
+    GP_REG_TGB(GPIOA->ODR, EXT_LED_PIN);
+    GP_REG_TGB(GPIOB->ODR, EXT_LED_PINB);
 
-    GPIOB->ODR ^= (1 << EXT_LED_PINB); // flip bit 5 of the GPIOB out data register
-
-    //for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
     delay_ms(50);
     
-    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
-    //for (uint32_t i = 0; i < 1000000/2; i++); // busy wait
+    GP_REG_TGB(GPIOA->ODR, LED_PIN);
     delay_ms(10);
 
-    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
+    GP_REG_TGB(GPIOA->ODR, LED_PIN);
     
-    //for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
     delay_ms(50);
 
-    GPIOA->ODR ^= (1 << LED_PIN); // flip bit 5 of the GPIOA out data register
-    //for (uint32_t i = 0; i < 1000000/8; i++); // busy wait
+    GP_REG_TGB(GPIOA->ODR, LED_PIN);
     delay_ms(10);
   }
 
