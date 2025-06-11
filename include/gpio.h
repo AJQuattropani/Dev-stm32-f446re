@@ -18,6 +18,7 @@
 
 #define ENABLE_GPIO_A RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN_Pos)
 #define ENABLE_GPIO_B RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOBEN_Pos)
+#define ENABLE_GPIO_C RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOCEN_Pos)
 
 #define GP_REG_SET(reg, val, pos) reg |= (val << pos)
 #define GP_REG_TGB(reg, pos) reg ^= (1 << pos)
