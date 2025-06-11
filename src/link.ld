@@ -2,6 +2,7 @@
 ENTRY(reset_handler);
 PROVIDE(reset_handler_0x004 = reset_handler);
 PROVIDE(systick_handler_0x03C = systick_handler);
+PROVIDE(extint_l15_l10_hdlr_0x0E0 = button_extern_handler);
 
 /* LQFP64 */
 
