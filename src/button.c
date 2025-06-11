@@ -1,6 +1,8 @@
 #include "button.h"
 
-void user_button_init() {
+#include "gpio.h"
+
+void user_button_init(void) {
   ENABLE_IRQ_CLOCK;
   // set exti line 13 to read from PC13
   SYSCFG->EXTICR[3] &= ~(SYSCFG_EXTICR4_EXTI13_Msk); // wipe bits responsible for EXTI13
@@ -10,8 +12,13 @@ void user_button_init() {
   EXTI->RTSR |= EXTI_RTSR_TR13_Msk; // trigger on rising edge.
   EXTI->FTSR |= EXTI_FTSR_TR13_Msk; // trigger on falling edge
   
-
-
 }
+
+void button_extern_handler(void) {
+
+    GP_REG_TGB(GPIOB->ODR, EXT_LED_PINB); // toggle LED
+    EXTI->PR |= EXTI_PR_PR0_Msk; // unset Pending Request
+}
+
 
 
