@@ -26,8 +26,7 @@ void main(void)
   __enable_irq();
 
 // Enable IRQ Clock
-  RCC->APB2ENR |= (1 << 14);
-  //RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN_Msk;
+  RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN_Msk;
 //#define RCC_APB2ENR_SYSCFGEN_Msk           (0x1UL << RCC_APB2ENR_SYSCFGEN_Pos)  /*!< 0x00004000 */
   DUMMY_READ_FROM(RCC->APB2ENR);
 
