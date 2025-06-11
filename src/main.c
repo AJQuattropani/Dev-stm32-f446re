@@ -4,17 +4,11 @@
 #include "gpio.h"
 #include "usart.h"
 #include "clock.h"
+#include "button.h"
 
 extern volatile uint32_t ticks;
 void main(void)
 {
-  configure_clock();
-  SystemCoreClockUpdate();
-  SysTick_Config(100000); // 10,000,000 / 100,000 = 1
-  NVIC_EnableIRQ(EXTI15_10_IRQn);
-
-  __enable_irq();
-
   ENABLE_GPIO_A;
   ENABLE_GPIO_B;
   ENABLE_GPIO_C;
@@ -26,31 +20,20 @@ void main(void)
   // button at PC13 enabled as input
   GP_REG_SET(GPIOC->MODER, GP_IN, GPIO_MODER_MODER13_Pos);
 
-
-// Enable IRQ Clock
-  RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN_Msk;
-  DUMMY_READ_FROM(RCC->APB2ENR);
-
-  // set exti line 13 to read from PC13
-  SYSCFG->EXTICR[3] &= ~(SYSCFG_EXTICR4_EXTI13_Msk); // wipe bits responsible for EXTI13
-  SYSCFG->EXTICR[3] |= (SYSCFG_EXTICR4_EXTI13_PC); // set EXTI13 to use PC (13)
-
-  EXTI->IMR |= EXTI_IMR_MR13_Msk; // enable exti 13
-  EXTI->RTSR |= EXTI_RTSR_TR13_Msk; // trigger on rising edge.
-  EXTI->FTSR |= EXTI_FTSR_TR13_Msk; // trigger on falling edge
-  
+  user_button_init();
 
   usart_init(USART2);
 
+  configure_clock();
+  SystemCoreClockUpdate();
+  SysTick_Config(100000); // 10,000,000 / 100,000 = 1
+  NVIC_EnableIRQ(EXTI15_10_IRQn); // enable callback for button EXTI13 PC13
+
+  __enable_irq();
+
   while (1)
   {
-    // BUTTON IS PC13
-    #define BUTTON_PIN 13
-    //if (!(GPIOC->IDR & (1 << BUTTON_PIN))) {
-      //GP_REG_TGB(GPIOB->ODR, EXT_LED_PINB); // toggle LED
-    //}
-
-    EXTI->SWIER |= EXTI_SWIER_SWIER1_Msk;
+    //EXTI->SWIER |= EXTI_SWIER_SWIER13_Msk; // blink LED by calling interrupt via software
 
     printf("[%.3f] Hello, World!\r\n", (float)ticks/1000.0);
 
