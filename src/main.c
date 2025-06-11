@@ -55,10 +55,3 @@ void main(void)
 
 }
 
-void button_extern_handler(void) {
-
-    GP_REG_TGB(GPIOB->ODR, EXT_LED_PINB); // toggle LED
-    EXTI->PR |= EXTI_PR_PR0_Msk; // unset Pending Request
-}
-
-
