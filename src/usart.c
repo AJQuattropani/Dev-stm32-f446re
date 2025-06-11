@@ -2,11 +2,7 @@
 
 void usart_init(USART_TypeDef *usart) {
   /* Enable USART2 clock */
-  RCC->APB1ENR |= (1 << RCC_APB1ENR_USART2EN_Pos);
-  // do two dummy reads after enabling
-  volatile uint32_t dummy;
-  dummy = RCC->APB1ENR;
-  dummy = RCC->APB1ENR;
+  ENABLE_USART2_CLOCK;
 
   /* Enable GPIOA clock*/
   RCC->AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN);
