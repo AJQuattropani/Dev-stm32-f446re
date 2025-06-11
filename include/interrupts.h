@@ -98,8 +98,8 @@ void usart2_handler_0x0D8(void)
     __attribute__((weak, alias("default_handler")));
 void usart3_handler_0x0DC(void)
     __attribute__((weak, alias("default_handler")));
-void extint_l15_l10_hdlr_0x0E0(void)
-    __attribute__((weak, alias("default_handler")));
+extern void extint_l15_l10_hdlr_0x0E0(void);
+
 void rtc_alarm_ab_ext_hdlr_0x0E4(void)
     __attribute__((weak, alias("default_handler")));
 void otg_fs_wkup_handler_0x0E8(void)
@@ -236,23 +236,23 @@ uint32_t isr_vector[ISR_VECTOR_SIZE_W]
         (uint32_t)&can1_rx1_handler_0x094,
         (uint32_t)&can1_sce_handler_0x098,
         (uint32_t)&exti9_5_handler_0x09C,
-        (uint32_t)tim1_brk_tim9_hdlr_0x0A0,
-        (uint32_t)tim1_up_tim10_hdlr_0x0A4,
-        (uint32_t)tim1_trg_com_tim11_hdlr_0x0A8,
-        (uint32_t)tim1_cc_hdlr_0x0AC,
-        (uint32_t)tim2_hdlr_0x0B0,
-        (uint32_t)tim3_hdlr_0x0B4,
-        (uint32_t)tim4_hdlr_0x0B8,
-        (uint32_t)i2c1_ev_hdlr_0x0BC,
-        (uint32_t)i2c1_er_hdlr_0x0C0,
-        (uint32_t)i2c2_ev_hdlr_0x0C4,
-        (uint32_t)i2c2_er_hdlr_0x0C8,
-        (uint32_t)spi1_handler_0x0CC,
-        (uint32_t)spi2_handler_0x0D0,
-        (uint32_t)usart1_handler_0x0D4,
-        (uint32_t)usart2_handler_0x0D8,
-        (uint32_t)usart3_handler_0x0DC,
-        (uint32_t)extint_l15_l10_hdlr_0x0E0,
+        (uint32_t)&tim1_brk_tim9_hdlr_0x0A0,
+        (uint32_t)&tim1_up_tim10_hdlr_0x0A4,
+        (uint32_t)&tim1_trg_com_tim11_hdlr_0x0A8,
+        (uint32_t)&tim1_cc_hdlr_0x0AC,
+        (uint32_t)&tim2_hdlr_0x0B0,
+        (uint32_t)&tim3_hdlr_0x0B4,
+        (uint32_t)&tim4_hdlr_0x0B8,
+        (uint32_t)&i2c1_ev_hdlr_0x0BC,
+        (uint32_t)&i2c1_er_hdlr_0x0C0,
+        (uint32_t)&i2c2_ev_hdlr_0x0C4,
+        (uint32_t)&i2c2_er_hdlr_0x0C8,
+        (uint32_t)&spi1_handler_0x0CC,
+        (uint32_t)&spi2_handler_0x0D0,
+        (uint32_t)&usart1_handler_0x0D4,
+        (uint32_t)&usart2_handler_0x0D8,
+        (uint32_t)&usart3_handler_0x0DC,
+        (uint32_t)&extint_l15_l10_hdlr_0x0E0,
         (uint32_t)&rtc_alarm_ab_ext_hdlr_0x0E4,
         (uint32_t)&otg_fs_wkup_handler_0x0E8,
         (uint32_t)&tim8_brk_tim12_hdlr_0x0EC,
